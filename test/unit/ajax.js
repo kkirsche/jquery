@@ -1,4 +1,4 @@
-module( "ajax", {
+QUnit.module( "ajax", {
 	setup: function() {
 		var jsonpCallback = this.jsonpCallback = jQuery.ajaxSettings.jsonpCallback;
 		jQuery.ajaxSettings.jsonpCallback = function() {
@@ -14,9 +14,10 @@ module( "ajax", {
 });
 
 (function() {
-	test("Unit Testing Environment", 2, function () {
-		ok( hasPHP, "Running in an environment with PHP support. The AJAX tests only run if the environment supports PHP!" );
-		ok( !isLocal, "Unit tests are not ran from file:// (especially in Chrome. If you must test from file:// with Chrome, run it with the --allow-file-access-from-files flag!)" );
+	QUnit.test("Unit Testing Environment", 2, function (assert) {
+		assert.expect(2);
+		assert.ok( hasPHP, "Running in an environment with PHP support. The AJAX tests only run if the environment supports PHP!" );
+		assert.ok( !isLocal, "Unit tests are not ran from file:// (especially in Chrome. If you must test from file:// with Chrome, run it with the --allow-file-access-from-files flag!)" );
 	});
 
 	if ( !jQuery.ajax || ( isLocal && !hasPHP ) ) {
@@ -34,12 +35,12 @@ module( "ajax", {
 
 //----------- jQuery.ajax()
 
-	testIframeWithCallback( "XMLHttpRequest - Attempt to block tests because of dangling XHR requests (IE)", "ajax/unreleasedXHR.html", function() {
-		expect( 1 );
-		ok( true, "done" );
+	QUnit.testIframeWithCallback( "XMLHttpRequest - Attempt to block tests because of dangling XHR requests (IE)", "ajax/unreleasedXHR.html", function(assert) {
+		assert.expect( 1 );
+		assert.ok( true, "done" );
 	});
 
-	ajaxTest( "jQuery.ajax() - success callbacks", 8, {
+	QUnit.ajaxTest( "jQuery.ajax() - success callbacks", 8, {
 		setup: addGlobalEvents("ajaxStart ajaxStop ajaxSend ajaxComplete ajaxSuccess"),
 		url: url("data/name.html"),
 		beforeSend: function() {
@@ -53,36 +54,43 @@ module( "ajax", {
 		}
 	});
 
-	ajaxTest( "jQuery.ajax() - success callbacks - (url, options) syntax", 8, {
+	QUnit.ajaxTest( "jQuery.ajax() - success callbacks - (url, options) syntax", 8, {
 		setup: addGlobalEvents("ajaxStart ajaxStop ajaxSend ajaxComplete ajaxSuccess"),
 		create: function( options ) {
 			return jQuery.ajax( url("data/name.html"), options );
 		},
-		beforeSend: function() {
-			ok( true, "beforeSend" );
+		beforeSend: function(assert) {
+			assert.expect(1);
+			assert.ok( true, "beforeSend" );
 		},
-		success: function() {
-			ok( true, "success" );
+		success: function(assert) {
+			assert.expect(1);
+			assert.ok( true, "success" );
 		},
-		complete: function() {
-			ok( true, "complete" );
+		complete: function(assert) {
+			assert.expect(1);
+			assert.ok( true, "complete" );
 		}
 	});
 
-	ajaxTest( "jQuery.ajax() - success callbacks (late binding)", 8, {
+	QUnit.ajaxTest( "jQuery.ajax() - success callbacks (late binding)", 8, {
 		setup: addGlobalEvents("ajaxStart ajaxStop ajaxSend ajaxComplete ajaxSuccess"),
 		url: url("data/name.html"),
-		beforeSend: function() {
-			ok( true, "beforeSend" );
+		beforeSend: function(assert) {
+			assert.expect(1);
+			assert.ok( true, "beforeSend" );
 		},
 		success: true,
 		afterSend: function( request ) {
-			request.always(function() {
-				ok( true, "complete" );
-			}).done(function() {
-				ok( true, "success" );
-			}).fail(function() {
-				ok( false, "error" );
+			request.always(function(assert) {
+				assert.expect(1);
+				assert.ok( true, "complete" );
+			}).done(function(assert) {
+				assert.expect(1);
+				assert.ok( true, "success" );
+			}).fail(function(assert) {
+				assert.expect(1);
+				assert.ok( false, "error" );
 			});
 		}
 	});
