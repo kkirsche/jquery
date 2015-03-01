@@ -130,7 +130,7 @@ QUnit.module( "ajax", {
 		}
 	});
 
-	ajaxTest( "jQuery.ajax() - textStatus and errorThrown values", 4, [
+	QUnit.ajaxTest( "jQuery.ajax() - textStatus and errorThrown values", 4, [
 		{
 			url: url("data/name.php?wait=5"),
 			error: function( _, textStatus, errorThrown ) {
@@ -153,7 +153,7 @@ QUnit.module( "ajax", {
 		}
 	]);
 
-	ajaxTest( "jQuery.ajax() - responseText on error", 1, {
+	QUnit.ajaxTest( "jQuery.ajax() - responseText on error", 1, {
 		url: url("data/errorWithText.php"),
 		error: function( xhr ) {
 			strictEqual( xhr.responseText, "plain text message", "Test jqXHR.responseText is filled for HTTP errors" );
